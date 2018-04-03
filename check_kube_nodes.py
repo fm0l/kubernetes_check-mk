@@ -46,7 +46,7 @@ if kubeCheck != 0:
 ##Output Function
 
 def outFun():
-	print str(ERRCODE), str("Kubernetes_Nodes"), str("-"), str(reportedConditions)
+	print str(ERRCODE), str("Kubernetes_Nodes"), str("-"), str(reportedConditions), str(nodesToAdd)
 	return ERRCODE;
 
 ## I get name of the nodes
@@ -55,10 +55,12 @@ number_list = len(parsed_nodes['items'])
 
 nodeDict = {}
 reportedConditions = []
+nodesToAdd = []
 ERRCODE = 0
 for i in range(0,number_list):
 	nodeToAdd = parsed_nodes['items'][i]['metadata'].get('name')
 	nodeDict[i] = nodeToAdd
+	nodesToAdd.append(nodeToAdd)
 	number_conditions = len(parsed_nodes['items'][i]['status']['conditions'])
 	for k in range(0,number_conditions):
 		conditionType = parsed_nodes['items'][i]['status']['conditions'][k]['type']

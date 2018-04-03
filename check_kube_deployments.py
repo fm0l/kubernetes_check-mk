@@ -46,7 +46,7 @@ if kubeCheck != 0:
 ##Output Function
 
 def outFun():
-	print str(ERRCODE), str("Kubernetes_Deployments"), str("-"), str(reportedConditions)
+	print str(ERRCODE), str("Kubernetes_Deployments"), str("-"), str(reportedConditions), str(depsToAdd)
 	return ERRCODE;
 
 ## I get name of the nodes
@@ -55,17 +55,19 @@ number_list = len(parsed_deps['items'])
 
 depDict = {}
 reportedConditions = []
+depsToAdd = []
 ERRCODE = 0
 for i in range(0,number_list):
-	depsToAdd = parsed_deps['items'][i]['metadata'].get('name')
-	depDict[i] = depsToAdd
+	depToAdd = parsed_deps['items'][i]['metadata'].get('name')
+	depDict[i] = depToAdd
+	depsToAdd.append(depToAdd)
 	number_conditions = len(parsed_deps['items'][i]['status']['conditions'])
 	for k in range(0,number_conditions):
 		conditionType = parsed_deps['items'][i]['status']['conditions'][k]['type']
 		typeStatus = parsed_deps['items'][i]['status']['conditions'][k]['status']
 		reasonCondition = parsed_deps['items'][i]['status']['conditions'][k]['reason']
 		testCondition = str(conditionType) + '-' + str(typeStatus)
-		reportCondition = str(depsToAdd) + ':', str(testCondition)
+		reportCondition = str(depToAdd) + ':', str(testCondition)
 		rolloutCondition = str(testCondition) + '-' + str(reasonCondition)
 		
 		if not testCondition == 'Available-True' and not testCondition == 'Progressing-True':
