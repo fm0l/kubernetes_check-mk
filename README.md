@@ -1,6 +1,6 @@
 # Kubernetes Local Checks for Check MK
 
-**TODO** - Pods Checks!
+**TODO** - Pods Checks / Stateful Checks!
 
 ##### 1- How To Install these checks
 
