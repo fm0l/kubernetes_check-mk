@@ -1,6 +1,6 @@
 # Kubernetes Local Checks for Check MK
 
-**TODO** - Pods Checks / Stateful Checks!
+**TODO** - Pods Checks / StatefulSets Checks!
 
 ##### 1- How To Install these checks
 
@@ -14,13 +14,13 @@
  
 ###### Master Node (no worker pods):
  - Nodes Check
- - Deployments Check
+ - Deployments Check	
  
 ###### Master Node (with worker pods):
  - Nodes Check
  - Deployments Check
- - Pods Check
+ - Pods / StatefulSets Check
  
 ###### Slave Node:
  - Nodes Check
- - Pods Check
+ - Pods / StatefulSets Check
