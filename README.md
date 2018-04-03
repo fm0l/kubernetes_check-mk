@@ -22,3 +22,6 @@
 ###### Slave Node:
  - Nodes Check
  - Pods / StatefulSets Check
+
+
+##### Remember to set the kube.conf accordingly to the node. Defaults = { Master = admin.conf, Slave = kubelet.conf }
