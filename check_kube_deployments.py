@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 #########################################################
-#				check_kube_deployments.py				#
-#														#
-#		Check_MK Local script for Kubernetes			#
-#		deployments health								#
-#														#
-#		Author:	Federico Mollura						#
-#														#
+#		check_kube_deployments.py               #
+#   							#
+#		Check_MK Local script for Kubernetes	#
+#		deployments health		        #
+#							#
+#		Author:	Federico Mollura	        #
+#							#
 #########################################################
 
 ### Imports
