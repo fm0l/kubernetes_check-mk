@@ -1,7 +1,5 @@
 # Kubernetes Local Checks for Check MK
 
-**TODO** - Pods Checks / StatefulSets Checks!
-
 ##### 1- How To Install these checks
 
   - Install Check MK Agent
