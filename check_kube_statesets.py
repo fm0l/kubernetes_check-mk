@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #########################################################
-#              check_kube_nodes.py                      #
+#              check_kube_statesets.py                  #
 #                                                       #
 #		Check_MK Local script for Kubernetes    #
 #		nodes health			        #
@@ -33,11 +33,12 @@ with open(full_path, 'r') as f:
         os.environ[key] = value
 
 ## I get a nodes description in JSON format
-os.environ["GET_NODES"] = "kubectl get nodes -o json"
-getNodes = os.popen('$GET_NODES').read()
+os.environ["GET_SETS"] = "kubectl get statefulsets -o json"
+getSets = os.popen('$GET_SETS').read()
+
 
 ## Check if kubectl is working after setting the environment
-kubeCheck = int(os.popen('if [ $( $GET_NODES 2>/dev/null | wc -l) -le 30 ]; then echo "3"; else echo "0"; fi').read())
+kubeCheck = int(os.popen('if [ $( $GET_SETS 2>/dev/null | wc -l) -le 30 ]; then echo "3"; else echo "0"; fi').read())
 
 if kubeCheck != 0:
 	print "0 KubeNodes CRITICAL - unable to connect to Kubernetes via kubectl!"
@@ -46,40 +47,39 @@ if kubeCheck != 0:
 ##Output Function
 
 def outFun():
-	print str(ERRCODE), str("Kubernetes_Nodes"), str("-"), str(reportedConditions), str(nodesToAdd)
+	print str(ERRCODE), str("Kubernetes_StatefulSets"), str("-"), str(reportedConditions), str(statesToAdd)
 	return ERRCODE;
 
 ## I get name of the nodes
-parsed_nodes = json.loads(getNodes)
-number_list = len(parsed_nodes['items'])
+parsed_sets = json.loads(getSets)
+number_list = len(parsed_sets['items'])
 
-nodeDict = {}
+setDict = {}
 reportedConditions = []
-nodesToAdd = []
+podsToCheck = []
+statesToAdd = []
 ERRCODE = 0
 for i in range(0,number_list):
-	nodeToAdd = parsed_nodes['items'][i]['metadata'].get('name')
-	nodeDict[i] = nodeToAdd
-	nodesToAdd.append(nodeToAdd)
-	number_conditions = len(parsed_nodes['items'][i]['status']['conditions'])
-	for k in range(0,number_conditions):
-		conditionType = parsed_nodes['items'][i]['status']['conditions'][k]['type']
-		typeStatus = parsed_nodes['items'][i]['status']['conditions'][k]['status']
-		testCondition = str(conditionType) + '-' + str(typeStatus)
-		reportCondition = str(nodeToAdd) + ':', str(testCondition)
-		if testCondition == 'OutOfDisk-True':
-			ERRCODE += 1
+	stateToAdd = parsed_sets['items'][i]['metadata'].get('name')
+	statesToAdd.append(stateToAdd)
+
+for i in statesToAdd:
+### I get the JSON Pods
+	os.environ["POD"] = i
+	command = "kubectl get po -l app=" + i + " " + "-o json"
+	getPods =  os.popen(command).read()
+	parsed_pods = json.loads(getPods)
+### Now i can analyze them
+	pods_list = len(parsed_pods['items'])
+	for n in range(0,pods_list):
+		podName = parsed_pods['items'][n]['metadata']['name']
+		phasePod = parsed_pods['items'][1]['status']['phase']
+		if not phasePod == "Running":
+			reportCondition = str(podName) + ': ' + str(phasePod)	
 			reportedConditions.append(reportCondition)
-		elif testCondition == 'Ready-False':
-			ERRCODE += 1
-			reportedConditions.append(reportCondition)
-		elif testCondition == 'MemoryPressure-True':
-			ERRCODE += 2
-			reportedConditions.append(reportCondition)
-		elif testCondition == 'DiskPressure-True':
-			ERRCODE += 2
-			reportedConditions.append(reportCondition)
-		
+			ERRCODE = 2
+
+
 if ERRCODE >= 2:
 	ERRCODE = 2
 elif ERRCODE == 1:
