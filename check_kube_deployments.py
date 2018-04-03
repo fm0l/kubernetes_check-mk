@@ -46,7 +46,7 @@ if kubeCheck != 0:
 ##Output Function
 
 def outFun():
-	print str(ERRCODE), str("Kubernetes_Nodes"), str("-"), str(reportedConditions)
+	print str(ERRCODE), str("Kubernetes_Deployments"), str("-"), str(reportedConditions)
 	return ERRCODE;
 
 ## I get name of the nodes
