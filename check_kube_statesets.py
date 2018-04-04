@@ -73,7 +73,7 @@ for i in statesToAdd:
 	pods_list = len(parsed_pods['items'])
 	for n in range(0,pods_list):
 		podName = parsed_pods['items'][n]['metadata']['name']
-		phasePod = parsed_pods['items'][1]['status']['phase']
+		phasePod = parsed_pods['items'][n]['status']['phase']
 		if not phasePod == "Running":
 			reportCondition = str(podName) + ': ' + str(phasePod)	
 			reportedConditions.append(reportCondition)
