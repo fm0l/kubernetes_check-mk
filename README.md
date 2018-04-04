@@ -13,6 +13,7 @@
 ###### Master Node (no worker pods):
  - Nodes Check
  - Deployments Check	
+ - Pods / StatefulSets Check
  
 ###### Master Node (with worker pods):
  - Nodes Check
