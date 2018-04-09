@@ -46,7 +46,7 @@ if kubeCheck != 0:
 ##Output Function
 
 def outFun():
-	print str(ERRCODE), str("Kubernetes_Nodes"), str("-"), str(reportedConditions), str(nodesToAdd)
+        print str(ERRCODE), str("Kubernetes_Deployments"), str("perf=") + str(PERFVALUE) + str(";1;0;0;2"), str(reportedConditions), str(depsToAdd)
 	return ERRCODE;
 
 ## I get name of the nodes
@@ -86,6 +86,7 @@ elif ERRCODE == 1:
 	pass
 elif ERRCODE == 0:
 	pass
-			
+
+PERFVALUE = int("2") - int(ERRCODE)
 
 outFun()

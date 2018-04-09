@@ -47,7 +47,7 @@ if kubeCheck != 0:
 ##Output Function
 
 def outFun():
-	print str(ERRCODE), str("Kubernetes_PodsOnline"), str("-"), str(setDict)
+        print str(ERRCODE), str("Kubernetes_Deployments"), str("perf=") + str(PERFVALUE) + str(";1;0;0;2"), str(reportedConditions), str(depsToAdd)
 	return ERRCODE;
 
 ## I get name of the nodes
@@ -65,5 +65,7 @@ for i in range(0,number_list):
 	reportedCondition = parsed_sets['items'][i]['status']['containerStatuses'][0].get('state')
 #	reportedConditions.append(reportedCondition)
 	setDict.update({stateToAdd: reportedCondition})
+
+PERFVALUE = int("2") - int(ERRCODE)
 
 outFun()
