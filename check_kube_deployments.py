@@ -40,7 +40,7 @@ getDeps = os.popen('$GET_DEPS').read()
 kubeCheck = int(os.popen('if [ $( $GET_DEPS 2>/dev/null | wc -l) -le 30 ]; then echo "3"; else echo "0"; fi').read())
 
 if kubeCheck != 0:
-	print "0 KubeNodes CRITICAL - unable to connect to Kubernetes via kubectl!"
+	print "0 Kubernetes_Deployments CRITICAL - unable to connect to Kubernetes via kubectl!"
 	sys.exit()
 
 ##Output Function

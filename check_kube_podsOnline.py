@@ -33,7 +33,7 @@ with open(full_path, 'r') as f:
         os.environ[key] = value
 
 ## I get a nodes description in JSON format
-os.environ["GET_SETS"] = "kubectl get statefulsets -o json"
+os.environ["GET_SETS"] = "kubectl get pods -o json"
 getSets = os.popen('$GET_SETS').read()
 
 
@@ -41,13 +41,13 @@ getSets = os.popen('$GET_SETS').read()
 kubeCheck = int(os.popen('if [ $( $GET_SETS 2>/dev/null | wc -l) -le 30 ]; then echo "3"; else echo "0"; fi').read())
 
 if kubeCheck != 0:
-	print "0 Kubernetes_StatefulSets CRITICAL - unable to connect to Kubernetes via kubectl!"
+	print "0 Kubernetes_PodsOnline CRITICAL - unable to connect to Kubernetes via kubectl!"
 	sys.exit()
 
 ##Output Function
 
 def outFun():
-	print str(ERRCODE), str("Kubernetes_StatefulSets"), str("-"), str(reportedConditions), str(statesToAdd)
+	print str(ERRCODE), str("Kubernetes_PodsOnline"), str("-"), str(reportedConditions), str(statesToAdd)
 	return ERRCODE;
 
 ## I get name of the nodes
