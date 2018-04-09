@@ -26,3 +26,8 @@
 
 
 ##### Remember to set the kube.conf accordingly to the node. Defaults = { Master = admin.conf, Slave = kubelet.conf }
+
+
+#### TODO LIST
+1- Add statistics
+2- Add Multi-Master Support
