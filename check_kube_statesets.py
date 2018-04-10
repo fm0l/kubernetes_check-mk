@@ -38,7 +38,7 @@ getSets = os.popen('$GET_SETS').read()
 
 
 ## Check if kubectl is working after setting the environment
-kubeCheck = int(os.popen('if [ $( $GET_SETS 2>/dev/null | wc -l) -le 30 ]; then echo "3"; else echo "0"; fi').read())
+kubeCheck = int(os.popen('if [ $( $GET_SETS 2>/dev/null | wc -l) -le 5 ]; then echo "3"; else echo "0"; fi').read())
 
 if kubeCheck != 0:
 	print "0 Kubernetes_StatefulSets CRITICAL - unable to connect to Kubernetes via kubectl!"
@@ -47,7 +47,7 @@ if kubeCheck != 0:
 ##Output Function
 
 def outFun():
-        print str(ERRCODE), str("Kubernetes_Deployments"), str("perf=") + str(PERFVALUE) + str(";1;0;0;2"), str(reportedConditions), str(depsToAdd)
+        print str(ERRCODE), str("Kubernetes_StatefulSets"), str("perf=") + str(PERFVALUE) + str(";1;0;0;2"), str(reportedConditions), str(reportedConditions)
 	return ERRCODE;
 
 ## I get name of the nodes
