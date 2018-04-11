@@ -17,19 +17,41 @@ done
 
 }
 
-function cleanLogs {
+#function cleanStartLogs {
 
-mkdir -p $LOGDIR/archive
-for i in $(find $LOGDIR -maxdepth 1 -type f -printf "%f\n" -name "*.log"); do
-  size=$(stat -c %s $LOGDIR/$i)
-  if [ $size -ge 500000 ]; then 
-    cp $LOGDIR/$i $LOGDIR/archive/$i-$(date '+%Y-%m-%d-%H:%M:%S')
-    gzip -9v $LOGDIR/archive/$i-$(date '+%Y-%m-%d-%H:%M:%S')
-    echo > $LOGDIR/$i
-  fi
-done
+#mkdir -p $LOGDIR/archive
+#for i in $(find $LOGDIR -maxdepth 1 -type f -printf "%f\n" -name "*.log"); do
+#  size=$(stat -c %s $LOGDIR/$i)
+#  if [ $size -ge 500000 ]; then
+#    export LASTLINE=$(tail -1 $LOGDIR/$i)
+#    cp $LOGDIR/$i $LOGDIR/archive/$i-$(date '+%Y-%m-%d-%H:%M:%S')
+#    gzip -9v $LOGDIR/archive/$i-$(date '+%Y-%m-%d-%H:%M:%S')
+#    echo > $LOGDIR/$i
+#    NEWNAME=${i%.log}
+#    if [ $(ps -ef | grep -v grep | grep "kubectl logs -f $NEWNAME" | wc -l) -eq 0 ]; then
+#      kubectl logs -f $NEWNAME | sed -n '/\"$LASTLINE\"/,$p' >> $LOGDIR/$i &
+#    fi
+#  fi
+#done
 
-}
+#}
+
+
+#function cleanLogs {
+
+#mkdir -p $LOGDIR/archive
+#for i in $(find $LOGDIR -maxdepth 1 -type f -printf "%f\n" -name "*.log"); do
+#  size=$(stat -c %s $LOGDIR/$i)
+#  if [ $size -ge 500000 ]; then 
+#    LASTLINE=$(tail -1 $LOGDIR/$i)
+#    cp $LOGDIR/$i $LOGDIR/archive/$i-$(date '+%Y-%m-%d-%H:%M:%S')
+#    gzip -9v $LOGDIR/archive/$i-$(date '+%Y-%m-%d-%H:%M:%S')
+#    echo > $LOGDIR/$i
+#  fi
+#done
+
+
+#}
 
 function stopLogs {
 
@@ -54,8 +76,7 @@ case $1 in
 	
 	auto)
 		stopLogs
-		cleanLogs
-		startLogs
+		cleanStartLogs
 	;;
 
 	clean)
