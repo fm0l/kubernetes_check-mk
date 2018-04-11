@@ -30,8 +30,7 @@
 #### There is also a bash script that creates logfiles, just put it in crontab to monitor each pod.
 #### Remeber to put statefulsets logs manually in checmk, it should never change path of the log
 #### To Handle different lognames for multiple pods/restarts, in check mk use logwatch.groups plugin in WATO
-*/5 * * * * /root/collect_logs.sh start &>/dev/null
-00 23 * * * /root/collect_logs.sh auto &>/dev/null
+start -> stop -> clean -> start
 
 #### TODO LIST
 1- Add Multi-Master Support
